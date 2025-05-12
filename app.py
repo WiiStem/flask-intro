@@ -50,5 +50,17 @@ def form():
 
     return render_template("form.html")
 
+@app.route("/math")
+def math():
+    return render_template("math.html")
+
+@app.route("/math_result", methods=['POST'])
+def solve():
+    num = request.form.get('num')
+    num_2 = request.form.get('num_2')
+    operation=request.form.get('operation')
+    answer = eval(f"{num} {operation} {num_2}")
+    return render_template("math_result.html",num=num, operation=operation, num_2=num_2, answer=answer)
+
 if __name__ == "__main__":
     app.run(debug=True) # debug = True enables automatic reload on changes and better error messages
