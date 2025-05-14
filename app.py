@@ -69,9 +69,6 @@ def catfact():
 
     return render_template("catfact.html", cat_fact=fact, cat_img=pic)
     
-    
-
-
 @app.route("/math")
 def math():
     return render_template("math.html")
@@ -83,6 +80,28 @@ def solve():
     operation=request.form.get('operation')
     answer = eval(f"{num} {operation} {num_2}")
     return render_template("math_result.html",num=num, operation=operation, num_2=num_2, answer=answer)
+
+
+@app.route("/dog", methods=["GET", "POST"])
+def dog():
+    image_url =None # This will be the dog image url
+    error = None #mHolds a error message if something goes wrong
+    breed = ""
+
+    if request.method == "POST":
+        breed = request.form.get("breed").lower()
+        api_url = f"https://dog.ceo/api/breed/{breed}/images/random"
+        response = requests.get(api_url)
+
+        #check for valid response
+        if response.status_code == 200 and response.json().get("status") == "success":
+            image_url = response.json()["message"]
+        else:
+            error = f"Could not find breed '{breed}'. Try another!"
+
+    return render_template("dog.html", image_url=image_url, error=error, breed=breed)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True) # debug = True enables automatic reload on changes and better error messages
