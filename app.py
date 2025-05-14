@@ -21,6 +21,7 @@
 # # render_templates loads HTML 
 from flask import Flask,render_template, request
 import datetime
+import requests
 
 
 #Create an instance of the Flask app
@@ -49,6 +50,27 @@ def form():
         return render_template("greeting.html", name=name, ssn=ssn)
 
     return render_template("form.html")
+
+@app.route("/catfact")
+def catfact():
+    response = requests.get("https://catfact.ninja/fact")
+    if response.status_code == 200: # we successfully got a response
+        data = response.json()
+        fact = data["fact"]
+    else:
+        fact = "Could not fetch a cat fact right now. Try again later."
+
+    picresp = requests.get("https://cataas.com/cat?json=true")
+    if picresp.status_code == 200: # we successfully got a response
+        picdata = picresp.json()
+        pic = picdata["url"]
+    else:
+        pic = "/images/404.png"
+
+    return render_template("catfact.html", cat_fact=fact, cat_img=pic)
+    
+    
+
 
 @app.route("/math")
 def math():
