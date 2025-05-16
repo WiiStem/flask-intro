@@ -7,7 +7,7 @@
     - This should put (venv) at the front of the command line
 3. Installed flask with "pip install flask"
 
-4. Created templates in a templates folder to return thml pages
+4. Created templates in a templates folder to return html pages
 5. Rendered the templates with render_templates()
 6. Created a requirements.txt file that will let you or others easily install packages the app needs
     -Created with: pip freeze > requirements.txt
@@ -106,7 +106,6 @@ def dog():
             error = f"Could not find breed '{breed}'. Try another!"
 
     return render_template("dog.html", breeds=breeds, image_url=image_url, error=error, breed=breed)
-
 
 
 if __name__ == "__main__":
